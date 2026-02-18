@@ -1,6 +1,6 @@
 # Crypto Portfolio Web
 
-A PHP + MySQL app for tracking multi-user crypto, gold, and fiat portfolios with DCA and P/L analysis.
+A PHP + MySQL app for tracking multi-user crypto, gold, and fiat portfolios with DCA, transaction history, and P/L analysis.
 
 ## Quick start (automatic)
 
@@ -19,6 +19,13 @@ This command will:
 ```bash
 ./setup_db.sh
 ```
+
+## Transaction management
+
+- Dashboard includes a BUY/SELL transaction form.
+- BUY updates holdings and invested capital.
+- SELL validates available holdings and updates holdings automatically.
+- Dashboard includes BUY and SELL transaction tables with optional asset/date filters.
 
 ## Environment variables
 

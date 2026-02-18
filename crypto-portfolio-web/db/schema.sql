@@ -32,6 +32,8 @@ CREATE TABLE IF NOT EXISTS portfolios (
     allocation_percentage DECIMAL(6,2) NOT NULL DEFAULT 0,
     initial_investment DECIMAL(18,2) NOT NULL DEFAULT 0,
     dca_per_month DECIMAL(18,2) NOT NULL DEFAULT 0,
+    current_quantity DECIMAL(28,10) NOT NULL DEFAULT 0,
+    total_invested DECIMAL(20,8) NOT NULL DEFAULT 0,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT fk_portfolios_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
@@ -54,14 +56,15 @@ CREATE TABLE IF NOT EXISTS transactions (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     user_id BIGINT UNSIGNED NOT NULL,
     asset_id BIGINT UNSIGNED NOT NULL,
-    type ENUM('BUY', 'SELL', 'DEPOSIT', 'WITHDRAW') NOT NULL,
-    amount DECIMAL(28,10) NOT NULL,
-    price DECIMAL(20,8) NOT NULL DEFAULT 0,
-    tx_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    type ENUM('BUY', 'SELL') NOT NULL,
+    quantity DECIMAL(28,10) NOT NULL,
+    unit_price DECIMAL(20,8) NOT NULL,
+    `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    reason VARCHAR(255) NULL,
     CONSTRAINT fk_transactions_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT fk_transactions_asset FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE RESTRICT,
-    INDEX idx_transactions_user_asset_date (user_id, asset_id, tx_date),
-    INDEX idx_transactions_asset_date (asset_id, tx_date)
+    INDEX idx_transactions_user_asset_date (user_id, asset_id, `date`),
+    INDEX idx_transactions_type_date (type, `date`)
 ) ENGINE=InnoDB;
 
 -- Starter assets. Extend as needed.
